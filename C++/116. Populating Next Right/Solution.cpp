@@ -22,9 +22,6 @@ public:
             return root;
         }
         root->left->next = root->right;
-        if(root->left->right != nullptr){
-            root->left->right->next = root->right->left;
-        }
         if(root->next != nullptr){
             root->right->next = root->next->left;
         }
