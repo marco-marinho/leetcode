@@ -1,0 +1,35 @@
+
+class Node {
+public:
+    int val;
+    Node* left;
+    Node* right;
+    Node* next;
+
+    Node() : val(0), left(nullptr), right(nullptr), next(nullptr) {}
+
+    Node(int _val) : val(_val), left(nullptr), right(nullptr), next(nullptr) {}
+
+    Node(int _val, Node* _left, Node* _right, Node* _next)
+        : val(_val), left(_left), right(_right), next(_next) {}
+};
+
+
+class Solution {
+public:
+    Node* connect(Node* root) {
+        if(root == nullptr || root->left == nullptr || root->right == nullptr){
+            return root;
+        }
+        root->left->next = root->right;
+        if(root->left->right != nullptr){
+            root->left->right->next = root->right->left;
+        }
+        if(root->next != nullptr){
+            root->right->next = root->next->left;
+        }
+            connect(root->left);
+            connect(root->right);
+        return root;
+    }
+};
