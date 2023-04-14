@@ -21,8 +21,7 @@ public:
         }
         std::hash<int> hasher;
         size_t answer = 0;
-        for (const auto &i : count)
-        {
+        for (const auto &i : count){
             answer ^= hasher(i) + 0x9e3779b9 +
                     (answer << 6) + (answer >> 2);
         }
