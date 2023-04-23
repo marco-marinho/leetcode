@@ -1,0 +1,48 @@
+class Solution {
+public:
+    int deleteAndEarn(vector<int>& nums) {
+        auto [vals, count] = countElements(nums);
+        vector<int> memory(vals.size(), -1);
+        return find(0, vals, count, memory);
+    }
+
+    pair<vector<int>, vector<int>> countElements(vector<int> &nums){
+        sort(nums.begin(), nums.end());
+        vector<int> vals;
+        vector<int> count;
+        int current = nums[0];
+        int curr_cnt = 1;
+        for (int i = 1; i < nums.size(); i++){
+            if (nums[i] == current) curr_cnt++;
+            else{
+                vals.emplace_back(current);
+                count.emplace_back(curr_cnt);
+                current = nums[i];
+                curr_cnt = 1;
+            }
+        }
+        vals.emplace_back(current);
+        count.emplace_back(curr_cnt);
+        vals.emplace_back(0);
+        count.emplace_back(0);
+        return {vals, count};
+    }
+
+
+    int find(const int idx, const vector<int> &vals, const vector<int> &count, vector<int> &memory){
+        if (idx == vals.size() - 1) return 0;
+        if (memory[idx] != -1) return memory[idx];
+        int cur_total = vals[idx] * count[idx];
+        if (vals[idx + 1] == vals[idx] + 1){
+            int skip = find(idx + 2, vals, count, memory);
+            cur_total += skip;
+            cur_total = max(cur_total, find(idx + 1, vals, count, memory));
+        }
+        else {
+            cur_total += find(idx + 1, vals, count, memory);
+        }
+        return memory[idx] = cur_total;
+    }
+
+
+};
